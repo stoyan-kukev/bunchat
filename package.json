@@ -1,0 +1,11 @@
+{
+  "name": "bunchat",
+  "private": true,
+  "scripts": {
+    "dev": "bun --filter '*' dev"
+  },
+  "workspaces": [
+    "frontend",
+    "backend"
+  ]
+}
