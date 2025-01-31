@@ -95,7 +95,8 @@ export async function handleSignup(req: Request): Promise<Response> {
 
 	return response;
 }
-function getTokenFromCookie(req: Request): string | undefined {
+
+export function getTokenFromCookie(req: Request): string | undefined {
 	const cookies = req.headers.get("Cookie");
 	const sessionToken = cookies
 		?.split(";")

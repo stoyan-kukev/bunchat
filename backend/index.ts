@@ -5,13 +5,16 @@ import {
 	handleLogout,
 	handleSignup,
 } from "./routes/auth";
-import { type Room } from "../types";
+import { type Connection, type Room } from "../types";
 import { handleRoomJoin } from "./routes/room";
 import type { Server } from "bun";
 
 const rooms = new Map<string, Room>();
 
-async function router(req: Request, server: Server): Promise<Response> {
+async function router(
+	req: Request,
+	server: Server
+): Promise<Response | undefined> {
 	const url = new URL(req.url);
 
 	if (url.pathname === "/api/login" && req.method === "POST") {
@@ -31,7 +34,7 @@ async function router(req: Request, server: Server): Promise<Response> {
 	}
 
 	if (url.pathname === "/api/room/join" && req.method === "POST") {
-		return handleRoomJoin(req);
+		return handleRoomJoin(req, server);
 	}
 
 	return new Response("Not Found", { status: 404 });
@@ -44,6 +47,30 @@ const server = Bun.serve({
 		middleware(request, server);
 
 		return new Response();
+	},
+	websocket: {
+		async open(ws: Connection) {
+			const { roomId, username, id } = ws.data;
+
+			ws.subscribe(`room:${roomId}`);
+			server.publish(`room:${roomId}`, `room_join:${id}:${username}`);
+		},
+
+		async message(ws: Connection, message) {
+			const { id, username, roomId } = ws.data;
+
+			server.publish(
+				`room:${roomId}`,
+				`user:${id}:${username}:${message}`
+			);
+		},
+		async close(ws: Connection) {
+			const { id, username, roomId } = ws.data;
+
+			server.publish(`room:${roomId}`, `room_quit:${id}:${username}`);
+			ws.unsubscribe(`room:${roomId}`);
+			ws.close();
+		},
 	},
 	port: 1337,
 });

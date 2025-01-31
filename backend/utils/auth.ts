@@ -20,7 +20,7 @@ export function createSession(token: string, userId: string): Session {
 export function validateSessionToken(token: string): SessionValidationResult {
 	const row = db
 		.query(
-			`SELECT session.id, session.user_id, session.expires_at, user.id
+			`SELECT session.id, session.user_id, session.expires_at, user.id, user.username
             FROM session
             INNER JOIN user ON user.id = session.user_id
             WHERE id = $id`
@@ -39,6 +39,7 @@ export function validateSessionToken(token: string): SessionValidationResult {
 
 	const user: User = {
 		id: row[3],
+		username: row[4],
 	};
 
 	if (Date.now() >= session.expiresAt.getTime()) {
@@ -73,7 +74,8 @@ export interface Session {
 }
 
 export interface User {
-	id: number;
+	id: string;
+	username: string;
 }
 
 export function setSessionTokenCookie(

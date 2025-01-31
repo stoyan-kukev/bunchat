@@ -1,4 +1,5 @@
 import { type Server, type ServerWebSocket } from "bun";
+import type { User } from "./backend/utils/auth";
 
 export interface Message {
 	type: string;
@@ -12,23 +13,13 @@ export const DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 export type Handler = (
 	req: Request,
 	server: Server
-) => Promise<Response> | Response;
+) => Promise<Response | undefined> | Response;
 
 export type Middleware = (handler: Handler, server: Server) => Handler;
 
-export type UserData = {
-	username?: string | undefined;
-	roomId?: string | undefined;
-};
-
-export type Connection = ServerWebSocket<UserData>;
+export type Connection = ServerWebSocket<User & { roomId: string }>;
 
 export type Room = {
 	id: string;
 	clients: Set<Connection>;
-};
-
-export type User = {
-	id: string;
-	username: string;
 };
