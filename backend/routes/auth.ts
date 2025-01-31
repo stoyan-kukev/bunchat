@@ -115,8 +115,13 @@ export async function handleAuthCheck(req: Request) {
 	}
 
 	const row = db
-		.query("SELECT * FROM session WHERE id = $id")
-		.run({ $id: sessionToken });
+		.query(
+			`SELECT user.id, user.username
+			FROM user
+			INNER JOIN session ON session.user_id = user.id
+			WHERE session.id = $id`
+		)
+		.get({ $id: sessionToken }) as { id: string; username: string };
 
 	if (!row) {
 		return new Response(null, {
@@ -124,7 +129,9 @@ export async function handleAuthCheck(req: Request) {
 		});
 	}
 
-	return new Response(null, { status: 200 });
+	const { id, username } = row;
+
+	return jsonResponse({ id, username });
 }
 
 export async function handleLogout(req: Request) {

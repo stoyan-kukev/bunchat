@@ -1,15 +1,9 @@
 import { db } from "../db";
-import { encodeHexLowerCase } from "@oslojs/encoding";
-import { sha256 } from "@oslojs/crypto/sha2";
 import { DAY_IN_MILLIS } from "../../types";
 
 export function createSession(token: string, userId: string): Session {
-	const sessionId = encodeHexLowerCase(
-		sha256(new TextEncoder().encode(token))
-	);
-
 	const session: Session = {
-		id: sessionId,
+		id: token,
 		userId,
 		expiresAt: new Date(Date.now() + DAY_IN_MILLIS * 30),
 	};
@@ -24,9 +18,6 @@ export function createSession(token: string, userId: string): Session {
 }
 
 export function validateSessionToken(token: string): SessionValidationResult {
-	const sessionId = encodeHexLowerCase(
-		sha256(new TextEncoder().encode(token))
-	);
 	const row = db
 		.query(
 			`SELECT session.id, session.user_id, session.expires_at, user.id
@@ -34,7 +25,7 @@ export function validateSessionToken(token: string): SessionValidationResult {
             INNER JOIN user ON user.id = session.user_id
             WHERE id = $id`
 		)
-		.get({ $id: sessionId }) as any[];
+		.get({ $id: token }) as any[];
 
 	if (row == null) {
 		return { session: null, user: null };

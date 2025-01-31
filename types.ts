@@ -24,3 +24,8 @@ export type Room = {
 	id: string;
 	clients: Set<Connection>;
 };
+
+export type User = {
+	id: string;
+	username: string;
+};
