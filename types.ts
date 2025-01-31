@@ -1,4 +1,4 @@
-import { type ServerWebSocket } from "bun";
+import { type Server, type ServerWebSocket } from "bun";
 
 export interface Message {
 	type: string;
@@ -9,9 +9,12 @@ export interface Message {
 
 export const DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 
-export type Handler = (req: Request) => Promise<Response> | Response;
+export type Handler = (
+	req: Request,
+	server: Server
+) => Promise<Response> | Response;
 
-export type Middleware = (handler: Handler) => Handler;
+export type Middleware = (handler: Handler, server: Server) => Handler;
 
 export type UserData = {
 	username?: string | undefined;
