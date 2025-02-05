@@ -6,37 +6,47 @@ import {
 	handleLogout,
 	handleSignup,
 } from "./routes/auth";
-import { handleGetRooms, handleRoomJoin } from "./routes/room";
+import {
+	handleGetRoomMessages,
+	handleGetRooms,
+	handleRoomJoin,
+} from "./routes/room";
 import { randomUUIDv7, type Server } from "bun";
+import { db } from "./db";
 
-async function router(
-	req: Request,
-	server: Server
-): Promise<Response | undefined> {
-	const url = new URL(req.url);
+async function router(req: Request, server: Server): Promise<Response> {
+	const { pathname } = new URL(req.url);
 
 	if (req.headers.get("Upgrade") === "websocket") {
 		return handleRoomJoin(req, server);
 	}
 
-	if (url.pathname === "/api/login" && req.method === "POST") {
+	if (pathname === "/api/login" && req.method === "POST") {
 		return handleLogin(req);
 	}
 
-	if (url.pathname === "/api/signup" && req.method === "POST") {
+	if (pathname === "/api/signup" && req.method === "POST") {
 		return handleSignup(req);
 	}
 
-	if (url.pathname === "/api/user/check" && req.method === "GET") {
+	if (pathname === "/api/user/check" && req.method === "GET") {
 		return handleAuthCheck(req);
 	}
 
-	if (url.pathname === "/api/logout" && req.method === "GET") {
+	if (pathname === "/api/logout" && req.method === "GET") {
 		return handleLogout(req);
 	}
 
-	if (url.pathname === "/api/rooms" && req.method === "GET") {
+	if (pathname === "/api/rooms" && req.method === "GET") {
 		return handleGetRooms(req);
+	}
+
+	if (
+		pathname.match(/^\/api\/room\/[^\/]+\/messages$/) &&
+		req.method === "GET"
+	) {
+		const id = pathname.split("/")[3];
+		return handleGetRoomMessages(req, id);
 	}
 
 	return new Response("Not Found", { status: 404 });
@@ -76,6 +86,14 @@ const server = Bun.serve({
 			if (!msg.id) {
 				msg.id = randomUUIDv7();
 			}
+
+			db.exec("INSERT INTO message VALUES (?, ?, ?, ?, ?)", [
+				msg.id,
+				msg.content,
+				msg.timestamp ?? Date.now(),
+				room.id,
+				msg.sender.id,
+			]);
 
 			server.publish(`${room.id}`, JSON.stringify({ msg }));
 		},

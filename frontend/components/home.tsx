@@ -5,6 +5,7 @@ import { useAuth } from "../context/auth-context";
 import { LogOutButton } from "./auth/logout-button";
 import { ChatRoom } from "./room/chat-room";
 import { RoomCard } from "./room/room-card";
+import { BunLogo } from "./bun-logo";
 
 export function Home() {
 	const { user } = useAuth()!;
@@ -40,7 +41,10 @@ export function Home() {
 	return (
 		<div className="min-h-screen bg-gray-900 text-white flex flex-col items-center py-6 px-4">
 			<header className="w-full max-w-3xl bg-gray-800 p-4 flex justify-between items-center border-b border-gray-700 rounded-t-lg">
-				<h1 className="text-xl font-bold">BunChat</h1>
+				<h1 className="text-xl font-bold flex gap-x-2 items-center">
+					<BunLogo className="size-10" />
+					BunChat
+				</h1>
 				<div className="flex items-center space-x-4">
 					<p className="text-gray-400">
 						Logged in as {user.username}

@@ -13,6 +13,12 @@ export function ChatRoom() {
 	const [msgs, setMsgs] = useState<Message[]>([]);
 	const chatEndRef = useRef<HTMLDivElement | null>(null);
 
+	useEffect(() => {
+		fetch(`http://localhost:1337/api/room/${room.id}/messages`, {
+			credentials: "include",
+		}).then((res) => res.json().then((data) => setMsgs(data.messages)));
+	}, []);
+
 	const sendMessage = () => {
 		if (!input.trim()) return;
 

@@ -30,7 +30,7 @@ db.run(`
 CREATE TABLE message (
     id TEXT NOT NULL PRIMARY KEY,
     content TEXT NOT NULL,
-    created_at INTEGER NOT NULL,
+    timestamp INTEGER NOT NULL,
     room_id TEXT NOT NULL,
     user_id TEXT NOT NULL
 );
