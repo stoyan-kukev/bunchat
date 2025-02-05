@@ -7,6 +7,7 @@ import {
 	handleSignup,
 } from "./routes/auth";
 import {
+	handleCreateRoom,
 	handleGetRoomMessages,
 	handleGetRooms,
 	handleRoomJoin,
@@ -39,6 +40,10 @@ async function router(req: Request, server: Server): Promise<Response> {
 
 	if (pathname === "/api/rooms" && req.method === "GET") {
 		return handleGetRooms(req);
+	}
+
+	if (pathname === "/api/rooms/create" && req.method === "POST") {
+		return handleCreateRoom(req);
 	}
 
 	if (

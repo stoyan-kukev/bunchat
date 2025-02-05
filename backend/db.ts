@@ -35,7 +35,3 @@ CREATE TABLE message (
     user_id TEXT NOT NULL
 );
 `);
-
-db.run(`
-INSERT INTO room VALUES ("${randomUUIDv7()}", "test room");
-`);

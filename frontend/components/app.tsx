@@ -18,7 +18,7 @@ export function App() {
 	}, []);
 
 	return (
-		<div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+		<div className="min-h-screen flex items-center justify-center bg-gray-950 text-white">
 			<div className="w-full max-w-4xl">
 				{user ? <Home /> : <AuthForm />}
 			</div>

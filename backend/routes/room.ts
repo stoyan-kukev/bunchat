@@ -1,8 +1,7 @@
-import type { Server } from "bun";
+import { randomUUIDv7, type Server } from "bun";
 import { getTokenFromCookie, validateSessionToken } from "../utils/auth";
 import { db } from "../db";
 import { jsonResponse } from "../utils/response";
-import type { Message } from "@/common/types";
 
 export async function handleGetRooms(req: Request): Promise<Response> {
 	const sessionToken = getTokenFromCookie(req);
@@ -79,4 +78,29 @@ export async function handleGetRoomMessages(
 	}));
 
 	return jsonResponse({ messages });
+}
+
+export async function handleCreateRoom(req: Request): Promise<Response> {
+	const sessionToken = getTokenFromCookie(req);
+	if (!sessionToken) return new Response(null, { status: 401 });
+
+	const { user } = validateSessionToken(sessionToken);
+	if (!user) return new Response(null, { status: 401 });
+
+	const { name } = await req.json();
+	if (!name || typeof name !== "string" || name.length < 2) {
+		return new Response(null, { status: 400 });
+	}
+
+	const existingRoom = db
+		.query("SELECT * FROM room WHERE name LIKE $name")
+		.get({ $name: name });
+
+	if (existingRoom) {
+		return new Response(null, { status: 409 });
+	}
+
+	db.run("INSERT INTO room VALUES (?, ?);", [randomUUIDv7(), name]);
+
+	return new Response(null, { status: 200 });
 }
