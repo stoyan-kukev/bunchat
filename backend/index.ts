@@ -44,9 +44,7 @@ const server = Bun.serve({
 	async fetch(request: Request, server: Server) {
 		const middleware = cors(router, server);
 
-		middleware(request, server);
-
-		return new Response();
+		return middleware(request, server);
 	},
 	websocket: {
 		async open(ws: Connection) {
