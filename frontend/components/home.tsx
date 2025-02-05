@@ -13,7 +13,7 @@ export function Home() {
 		return;
 	}
 
-	const [rooms, setRooms] = useState<Room[] | null>(null);
+	const [rooms, setRooms] = useState<Room[]>([]);
 	useEffect(() => {
 		fetch("http://localhost:1337/api/rooms", {
 			credentials: "include",

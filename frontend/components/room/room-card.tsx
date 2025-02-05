@@ -3,7 +3,7 @@ import { useRoom } from "@/frontend/context/room-context";
 
 export function RoomCard({ id, name }: Room) {
 	const { room, setRoom } = useRoom()!;
-	if (!room) return null;
+	if (room) return null;
 
 	const handleClick = () => setRoom({ id, name });
 
