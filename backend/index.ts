@@ -55,27 +55,14 @@ const server = Bun.serve({
 	},
 	websocket: {
 		async open(ws: Connection) {
-			const { roomId, username, id } = ws.data;
-
-			ws.subscribe(`room:${roomId}`);
-			server.publish(`room:${roomId}`, `room_join:${id}:${username}`);
-		},
-
-		async message(ws: Connection, message) {
-			const { id, username, roomId } = ws.data;
-
-			server.publish(
-				`room:${roomId}`,
-				`user:${id}:${username}:${message}`
+			const { room, user } = ws.data;
+			console.log(
+				`User ${user.username} (${user.id}) joined room ${room.name}`
 			);
 		},
-		async close(ws: Connection) {
-			const { id, username, roomId } = ws.data;
 
-			server.publish(`room:${roomId}`, `room_quit:${id}:${username}`);
-			ws.unsubscribe(`room:${roomId}`);
-			ws.close();
-		},
+		async message(ws: Connection, message) {},
+		async close(ws: Connection) {},
 	},
 	port: 1337,
 });

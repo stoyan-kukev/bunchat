@@ -17,7 +17,7 @@ export type Handler = (
 
 export type Middleware = (handler: Handler, server: Server) => Handler;
 
-export type Connection = ServerWebSocket<User & { roomId: string }>;
+export type Connection = ServerWebSocket<{ user: User; room: Room }>;
 
 export type Room = {
 	id: string;

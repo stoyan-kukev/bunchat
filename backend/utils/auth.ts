@@ -25,21 +25,21 @@ export function validateSessionToken(token: string): SessionValidationResult {
             INNER JOIN user ON user.id = session.user_id
             WHERE session.id = $id`
 		)
-		.get({ $id: token }) as any[];
+		.get({ $id: token }) as any;
 
 	if (row == null) {
 		return { session: null, user: null };
 	}
 
 	const session: Session = {
-		id: row[0],
-		userId: row[1],
-		expiresAt: new Date(row[2] * 1000),
+		id: row.id,
+		userId: row.user_id,
+		expiresAt: new Date(row.expires_at * 1000),
 	};
 
 	const user: User = {
-		id: row[3],
-		username: row[4],
+		id: row.user_id,
+		username: row.username,
 	};
 
 	if (Date.now() >= session.expiresAt.getTime()) {

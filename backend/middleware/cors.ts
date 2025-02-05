@@ -27,7 +27,9 @@ export const cors: Middleware = (handler) => async (req, server) => {
 
 	// Add CORS headers to the response
 	corsHeaders.forEach((value, key) => {
-		response.headers.set(key, value);
+		if (response) {
+			response.headers.set(key, value);
+		}
 	});
 
 	return response;
