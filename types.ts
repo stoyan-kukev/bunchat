@@ -2,9 +2,9 @@ import { type Server, type ServerWebSocket } from "bun";
 import type { User } from "./backend/utils/auth";
 
 export interface Message {
-	type: string;
+	id?: string;
 	content: string;
-	sender?: string;
+	sender: User | null;
 	timestamp?: number;
 }
 

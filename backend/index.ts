@@ -6,9 +6,9 @@ import {
 	handleLogout,
 	handleSignup,
 } from "./routes/auth";
-import { type Connection, type Room } from "../types";
+import { type Connection, type Message, type Room } from "../types";
 import { handleGetRooms, handleRoomJoin } from "./routes/room";
-import type { Server } from "bun";
+import { randomUUIDv7, type Server } from "bun";
 import { validateSessionToken } from "./utils/auth";
 import { db } from "./db";
 
@@ -56,13 +56,47 @@ const server = Bun.serve({
 	websocket: {
 		async open(ws: Connection) {
 			const { room, user } = ws.data;
-			console.log(
-				`User ${user.username} (${user.id}) joined room ${room.name}`
-			);
+
+			ws.subscribe(`${room.id}`);
+
+			const msg: Message = {
+				id: randomUUIDv7(),
+				content: `${user.username} has joined the chat room`,
+				timestamp: Date.now(),
+				sender: null,
+			};
+
+			server.publish(`${room.id}`, JSON.stringify({ msg }));
 		},
 
-		async message(ws: Connection, message) {},
-		async close(ws: Connection) {},
+		async message(ws: Connection, message: string) {
+			const { room } = ws.data;
+
+			const { msg }: { msg: Message } = JSON.parse(message);
+
+			if (!msg) ws.close();
+
+			if (!msg.sender || msg.content.length < 1) return;
+
+			if (!msg.id) {
+				msg.id = randomUUIDv7();
+			}
+
+			server.publish(`${room.id}`, JSON.stringify({ msg }));
+		},
+		async close(ws: Connection) {
+			const { room, user } = ws.data;
+
+			const msg: Message = {
+				id: randomUUIDv7(),
+				content: `${user.username} has left the chat room`,
+				timestamp: Date.now(),
+				sender: null,
+			};
+
+			ws.unsubscribe(`${room.id}`);
+			server.publish(`${room.id}`, JSON.stringify({ msg }));
+		},
 	},
 	port: 1337,
 });

@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { AuthForm } from "./auth/auth-form";
-import { UserContext } from "./auth/auth-context";
-import type { User } from "../../backend/utils/auth";
 import { Home } from "./home";
 import { RoomProvider } from "./room/room-context";
+import { AuthProvider, useAuth } from "./auth/auth-context";
 
 export function App() {
-	const [user, setUser] = useState<User | null>(null);
+	const { user, setUser } = useAuth()!;
 
 	useEffect(() => {
 		fetch("http://localhost:1337/api/user/check", {
@@ -20,14 +19,14 @@ export function App() {
 	}, []);
 
 	return (
-		<UserContext.Provider value={{ user }}>
+		<AuthProvider>
 			<RoomProvider>
-				<div className="min-w-screen min-h-screen">
-					<div className="max-w-4xl mx-auto">
+				<div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+					<div className="w-full max-w-4xl">
 						{user ? <Home /> : <AuthForm />}
 					</div>
 				</div>
 			</RoomProvider>
-		</UserContext.Provider>
+		</AuthProvider>
 	);
 }

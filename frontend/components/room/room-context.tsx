@@ -3,12 +3,12 @@ import type { Room } from "../../../types";
 
 interface RoomContextType {
 	room: Room | null;
-	setRoom: (room: Room) => void;
+	setRoom: (room: Room | null) => void;
 	ws: WebSocket | null;
 	setWs: (ws: WebSocket | null) => void;
 }
 
-const RoomContext = createContext<RoomContextType | undefined>(undefined);
+const RoomContext = createContext<RoomContextType | null>(null);
 
 export const RoomProvider = ({ children }: { children: ReactNode }) => {
 	const [room, setRoom] = useState<Room | null>(null);

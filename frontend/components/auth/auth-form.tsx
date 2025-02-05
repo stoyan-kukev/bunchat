@@ -13,7 +13,7 @@ export function AuthForm() {
 					<button
 						onClick={() => setSignSelected(false)}
 						className={clsx([
-							signSelected ? "bg-gray-300" : "bg-gray-400",
+							signSelected ? "bg-gray-700" : "bg-gray-800",
 							"px-4 py-2 rounded-l-xl cursor-pointer",
 						])}
 					>
@@ -21,7 +21,7 @@ export function AuthForm() {
 					</button>
 					<button
 						className={clsx([
-							signSelected ? "bg-gray-400" : "bg-gray-300",
+							signSelected ? "bg-gray-800" : "bg-gray-700",
 							"px-4 py-2 rounded-r-xl cursor-pointer",
 						])}
 						onClick={() => setSignSelected(true)}
