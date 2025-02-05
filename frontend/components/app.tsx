@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { AuthForm } from "./auth/auth-form";
-import { LogOutButton } from "./auth/logout-button";
 import { UserContext } from "./auth/auth-context";
 import type { User } from "../../backend/utils/auth";
+import { Home } from "./home";
 
 export function App() {
 	const [user, setUser] = useState<User | null>(null);
@@ -20,7 +20,11 @@ export function App() {
 
 	return (
 		<UserContext.Provider value={{ user }}>
-			<div>{user ? <LogOutButton /> : <AuthForm />}</div>
+			<div className="min-w-screen min-h-screen">
+				<div className="max-w-4xl mx-auto">
+					{user ? <Home /> : <AuthForm />}
+				</div>
+			</div>
 		</UserContext.Provider>
 	);
 }

@@ -7,7 +7,7 @@ export function AuthForm() {
 	const [signSelected, setSignSelected] = useState(true);
 
 	return (
-		<div className="w-screen h-screen flex justify-center items-center">
+		<div className="flex justify-center items-center min-h-screen">
 			<div className="flex flex-col min-w-[25%] gap-y-8">
 				<div className="grid grid-cols-2 text-center">
 					<button
