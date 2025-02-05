@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { useRoom } from "./room-context";
-import type { Message } from "../../../types";
-import { useAuth } from "../auth/auth-context";
+import type { Message } from "@/common/types";
+import { useAuth } from "@/frontend/context/auth-context";
+import { useRoom } from "@/frontend/context/room-context";
 
 export function ChatRoom() {
 	const { room, ws, setRoom, setWs } = useRoom()!;

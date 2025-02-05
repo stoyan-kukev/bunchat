@@ -1,4 +1,4 @@
-import type { Middleware } from "../../types";
+import type { Middleware } from "@/common/types";
 
 const ALLOWED_ORIGINS = new Set([
 	"http://localhost:1337",

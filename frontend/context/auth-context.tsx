@@ -1,5 +1,5 @@
+import type { User } from "@/common/types";
 import { createContext, useContext, useState, type ReactNode } from "react";
-import type { User } from "../../../backend/utils/auth";
 
 interface AuthContextType {
 	user: User | null;

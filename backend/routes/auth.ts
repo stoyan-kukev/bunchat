@@ -4,9 +4,10 @@ import { jsonResponse } from "../utils/response";
 import {
 	createSession,
 	deleteSessionTokenCookie,
+	getTokenFromCookie,
 	setSessionTokenCookie,
 } from "../utils/auth";
-import { DAY_IN_MILLIS } from "../../types";
+import { DAY_IN_MILLIS } from "@/common/types";
 
 export async function handleLogin(req: Request): Promise<Response> {
 	const { username, password } = await req.json();
@@ -94,16 +95,6 @@ export async function handleSignup(req: Request): Promise<Response> {
 	);
 
 	return response;
-}
-
-export function getTokenFromCookie(req: Request): string | undefined {
-	const cookies = req.headers.get("Cookie");
-	const sessionToken = cookies
-		?.split(";")
-		.find((cookie) => cookie.trim().startsWith("session="))
-		?.split("session=")[1];
-
-	return sessionToken;
 }
 
 export async function handleAuthCheck(req: Request) {

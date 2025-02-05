@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { AuthForm } from "./auth/auth-form";
 import { Home } from "./home";
-import { useAuth } from "./auth/auth-context";
+import { useAuth } from "../context/auth-context";
 
 export function App() {
 	const { setUser, user } = useAuth()!;

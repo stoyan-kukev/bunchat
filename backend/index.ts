@@ -1,18 +1,13 @@
+import type { Connection, Message } from "@/common/types";
 import { cors } from "./middleware/cors";
 import {
-	getTokenFromCookie,
 	handleAuthCheck,
 	handleLogin,
 	handleLogout,
 	handleSignup,
 } from "./routes/auth";
-import { type Connection, type Message, type Room } from "../types";
 import { handleGetRooms, handleRoomJoin } from "./routes/room";
 import { randomUUIDv7, type Server } from "bun";
-import { validateSessionToken } from "./utils/auth";
-import { db } from "./db";
-
-const rooms = new Map<string, Room>();
 
 async function router(
 	req: Request,

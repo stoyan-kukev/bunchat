@@ -1,6 +1,5 @@
 import type { Server } from "bun";
-import { getTokenFromCookie } from "./auth";
-import { validateSessionToken } from "../utils/auth";
+import { getTokenFromCookie, validateSessionToken } from "../utils/auth";
 import { db } from "../db";
 import { jsonResponse } from "../utils/response";
 

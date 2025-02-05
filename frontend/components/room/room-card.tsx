@@ -1,11 +1,10 @@
-import type { Room } from "../../../types";
-import { useRoom } from "./room-context";
+import type { Room } from "@/common/types";
+import { useRoom } from "@/frontend/context/room-context";
 
 export function RoomCard({ id, name }: Room) {
-	const roomContext = useRoom();
-	if (!roomContext || roomContext.room) return null;
+	const { room, setRoom } = useRoom()!;
+	if (!room) return null;
 
-	const { setRoom } = roomContext;
 	const handleClick = () => setRoom({ id, name });
 
 	return (

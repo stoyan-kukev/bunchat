@@ -1,5 +1,10 @@
 import { db } from "../db";
-import { DAY_IN_MILLIS } from "../../types";
+import {
+	DAY_IN_MILLIS,
+	type Session,
+	type SessionValidationResult,
+	type User,
+} from "@/common/types";
 
 export function createSession(token: string, userId: string): Session {
 	const session: Session = {
@@ -63,21 +68,6 @@ export function invalidateSession(sessionId: string): void {
 	db.exec("DELETE FROM session WHERE id = ?", [sessionId]);
 }
 
-export type SessionValidationResult =
-	| { session: Session; user: User }
-	| { session: null; user: null };
-
-export interface Session {
-	id: string;
-	userId: string;
-	expiresAt: Date;
-}
-
-export interface User {
-	id: string;
-	username: string;
-}
-
 export function setSessionTokenCookie(
 	response: Response,
 	token: string,
@@ -96,4 +86,14 @@ export function deleteSessionTokenCookie(response: Response): void {
 	if (process.env.NODE_ENV === "production") cookie += " Secure;";
 
 	response.headers.set("Set-Cookie", cookie);
+}
+
+export function getTokenFromCookie(req: Request): string | undefined {
+	const cookies = req.headers.get("Cookie");
+	const sessionToken = cookies
+		?.split(";")
+		.find((cookie) => cookie.trim().startsWith("session="))
+		?.split("session=")[1];
+
+	return sessionToken;
 }

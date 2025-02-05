@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
+import type { Room } from "@/common/types";
+import { useRoom } from "../context/room-context";
+import { useAuth } from "../context/auth-context";
 import { LogOutButton } from "./auth/logout-button";
-import { useAuth } from "./auth/auth-context";
-import type { Room } from "../../types";
-import { RoomCard } from "./room/room-card";
-import { useRoom } from "./room/room-context";
 import { ChatRoom } from "./room/chat-room";
+import { RoomCard } from "./room/room-card";
 
 export function Home() {
 	const { user } = useAuth()!;
