@@ -73,7 +73,7 @@ export function SignUpForm() {
 				</label>
 				<input
 					className="border rounded-lg px-2 py-1"
-					type="text"
+					type="password"
 					name="password"
 					id="password"
 					onChange={(e) => setPassword(e.target.value)}
