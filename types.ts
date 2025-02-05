@@ -21,5 +21,5 @@ export type Connection = ServerWebSocket<User & { roomId: string }>;
 
 export type Room = {
 	id: string;
-	clients: Set<Connection>;
+	name: string;
 };

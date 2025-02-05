@@ -2,36 +2,48 @@ import type { Server } from "bun";
 import { getTokenFromCookie } from "./auth";
 import { validateSessionToken, type User } from "../utils/auth";
 import { db } from "../db";
+import { jsonResponse } from "../utils/response";
+
+export async function handleGetRooms(
+	req: Request
+): Promise<Response | undefined> {
+	const sessionToken = getTokenFromCookie(req);
+	if (!sessionToken) return new Response(null, { status: 400 });
+
+	const { user } = validateSessionToken(sessionToken);
+	if (!user) return new Response(null, { status: 400 });
+
+	const rooms = db.query("SELECT * FROM room").all();
+
+	return jsonResponse({ rooms });
+}
 
 export async function handleRoomJoin(
 	req: Request,
 	server: Server
 ): Promise<Response | undefined> {
-	const sessionToken = getTokenFromCookie(req);
-	if (!sessionToken) {
-		return new Response("ayo chill tf out");
-	}
+	const { pathname } = new URL(req.url);
 
-	const { user } = validateSessionToken(sessionToken);
-	if (!user) {
-		return new Response("ayo chill tf out");
-	}
+	if (pathname.startsWith("/room/"))
+		return new Response(null, { status: 400 });
 
-	const { roomId } = await req.json();
+	const parts = pathname.split("/");
+	const roomId = parts[2];
+	if (!roomId) return new Response(null, { status: 400 });
+
 	const row = db
-		.query(`SELECT * FROM room WHERE id = $id;`)
+		.query("SELECT * FROM room WHERE id = $id")
 		.all({ $id: roomId });
 
-	if (!row) {
-		return new Response("ayo chill tf out");
-	}
+	if (!row) return new Response(null, { status: 400 });
 
-	const success = server.upgrade<User & { roomId: string }>(req, {
-		data: { ...user, roomId },
-	});
-	if (success) {
-		return undefined;
-	}
+	const sessionToken = getTokenFromCookie(req);
+	if (!sessionToken) return new Response(null, { status: 400 });
 
-	return new Response("ayo chill tf out");
+	const { user } = validateSessionToken(sessionToken);
+	if (!user) return new Response(null, { status: 400 });
+
+	if (!server.upgrade(req, { data: { roomId, user } })) {
+		return new Response("Failed to upgrade request", { status: 400 });
+	}
 }

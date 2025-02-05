@@ -23,7 +23,7 @@ export function validateSessionToken(token: string): SessionValidationResult {
 			`SELECT session.id, session.user_id, session.expires_at, user.id, user.username
             FROM session
             INNER JOIN user ON user.id = session.user_id
-            WHERE id = $id`
+            WHERE session.id = $id`
 		)
 		.get({ $id: token }) as any[];
 

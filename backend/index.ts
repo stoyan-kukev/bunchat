@@ -1,13 +1,16 @@
 import { cors } from "./middleware/cors";
 import {
+	getTokenFromCookie,
 	handleAuthCheck,
 	handleLogin,
 	handleLogout,
 	handleSignup,
 } from "./routes/auth";
 import { type Connection, type Room } from "../types";
-import { handleRoomJoin } from "./routes/room";
+import { handleGetRooms, handleRoomJoin } from "./routes/room";
 import type { Server } from "bun";
+import { validateSessionToken } from "./utils/auth";
+import { db } from "./db";
 
 const rooms = new Map<string, Room>();
 
@@ -16,6 +19,10 @@ async function router(
 	server: Server
 ): Promise<Response | undefined> {
 	const url = new URL(req.url);
+
+	if (req.headers.get("Upgrade") === "websocket") {
+		return handleRoomJoin(req, server);
+	}
 
 	if (url.pathname === "/api/login" && req.method === "POST") {
 		return handleLogin(req);
@@ -33,8 +40,8 @@ async function router(
 		return handleLogout(req);
 	}
 
-	if (url.pathname === "/api/room/join" && req.method === "POST") {
-		return handleRoomJoin(req, server);
+	if (url.pathname === "/api/rooms" && req.method === "GET") {
+		return handleGetRooms(req);
 	}
 
 	return new Response("Not Found", { status: 404 });

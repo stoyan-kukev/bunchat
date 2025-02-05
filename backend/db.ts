@@ -1,3 +1,4 @@
+import { randomUUIDv7 } from "bun";
 import { Database } from "bun:sqlite";
 
 export const db = new Database(":memory:");
@@ -33,4 +34,8 @@ CREATE TABLE message (
     room_id TEXT NOT NULL,
     user_id TEXT NOT NULL
 );
+`);
+
+db.run(`
+INSERT INTO room VALUES ("${randomUUIDv7()}", "test room");
 `);
