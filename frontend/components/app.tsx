@@ -1,11 +1,10 @@
 import { useEffect } from "react";
 import { AuthForm } from "./auth/auth-form";
 import { Home } from "./home";
-import { RoomProvider } from "./room/room-context";
-import { AuthProvider, useAuth } from "./auth/auth-context";
+import { useAuth } from "./auth/auth-context";
 
 export function App() {
-	const { user, setUser } = useAuth()!;
+	const { setUser, user } = useAuth()!;
 
 	useEffect(() => {
 		fetch("http://localhost:1337/api/user/check", {
@@ -19,14 +18,10 @@ export function App() {
 	}, []);
 
 	return (
-		<AuthProvider>
-			<RoomProvider>
-				<div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
-					<div className="w-full max-w-4xl">
-						{user ? <Home /> : <AuthForm />}
-					</div>
-				</div>
-			</RoomProvider>
-		</AuthProvider>
+		<div className="min-h-screen flex items-center justify-center bg-gray-900 text-white">
+			<div className="w-full max-w-4xl">
+				{user ? <Home /> : <AuthForm />}
+			</div>
+		</div>
 	);
 }

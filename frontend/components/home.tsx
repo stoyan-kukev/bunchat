@@ -7,7 +7,7 @@ import { useRoom } from "./room/room-context";
 import { ChatRoom } from "./room/chat-room";
 
 export function Home() {
-	const { user, setUser } = useAuth()!;
+	const { user } = useAuth()!;
 	if (!user) {
 		window.location.href = "http://localhost:3000/";
 		return;
@@ -49,7 +49,7 @@ export function Home() {
 				</div>
 			</header>
 
-			<div className="w-full max-w-3xl flex-1 bg-gray-800 rounded-b-lg p-4 shadow-lg border border-gray-700">
+			<div className="w-full max-w-3xl bg-gray-800 rounded-b-lg p-4 shadow-lg border border-gray-700">
 				{room && ws ? (
 					<ChatRoom />
 				) : rooms && rooms.length > 0 ? (
