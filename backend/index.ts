@@ -92,7 +92,7 @@ const server = Bun.serve({
 				msg.id = randomUUIDv7();
 			}
 
-			db.exec("INSERT INTO message VALUES (?, ?, ?, ?, ?)", [
+			db.run("INSERT INTO message VALUES (?, ?, ?, ?, ?)", [
 				msg.id,
 				msg.content,
 				msg.timestamp ?? Date.now(),

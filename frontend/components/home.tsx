@@ -45,7 +45,7 @@ export function Home() {
 	const [open, setOpen] = useState(false);
 
 	return (
-		<div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col items-center justify-center py-6 px-4">
+		<div className="min-h-screen bg-gray-950 text-gray-100 flex flex-col items-center py-6 px-4">
 			<header className="w-full max-w-3xl bg-gray-900 p-4 flex justify-between items-center border-b border-gray-800 shadow-sm mb-8">
 				<h1 className="text-xl font-semibold flex gap-x-2 items-center">
 					<BunLogo className="size-10 text-indigo-400" />
@@ -66,7 +66,7 @@ export function Home() {
 				{room && ws ? (
 					<ChatRoom />
 				) : rooms && rooms.length > 0 ? (
-					<div className="space-y-4 flex flex-col">
+					<div className="space-y-4 flex flex-col justify-center">
 						<div className="flex space-x-4 items-center justify-between">
 							<h2 className="text-base font-medium text-gray-300">
 								Available Rooms
@@ -74,7 +74,7 @@ export function Home() {
 
 							<button
 								onClick={() => setOpen(true)}
-								className="bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 px-4 py-2 rounded-md border border-indigo-500/30 transition-colors duration-200"
+								className="bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 px-4 py-2 rounded-md border border-indigo-500/30 transition-colors duration-200 cursor-pointer"
 							>
 								Create new room
 							</button>
@@ -86,9 +86,17 @@ export function Home() {
 						</div>
 					</div>
 				) : (
-					<p className="text-gray-500 text-center">
-						No rooms available
-					</p>
+					<div className="flex space-x-4 items-center justify-between">
+						<p className="text-gray-500 text-center">
+							No rooms available
+						</p>
+						<button
+							onClick={() => setOpen(true)}
+							className="bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 px-4 py-2 rounded-md border border-indigo-500/30 transition-colors duration-200 cursor-pointer"
+						>
+							Create new room
+						</button>
+					</div>
 				)}
 			</div>
 			<CreateRoomModal
