@@ -89,7 +89,9 @@ export function ChatRoom() {
 										{msg.sender?.username}
 									</p>
 								)}
-								<p>{msg.content}</p>
+								<p className="break-all max-w-xs">
+									{msg.content}
+								</p>
 							</div>
 						</div>
 					);
