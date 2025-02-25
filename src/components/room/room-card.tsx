@@ -1,5 +1,5 @@
-import type { Room } from "@/common/types";
-import { useRoom } from "@/frontend/context/room-context";
+import type { Room } from "@/types";
+import { useRoom } from "@/context/room-context";
 
 export function RoomCard({ id, name }: Room) {
 	const { room, setRoom } = useRoom()!;

@@ -1,68 +1,66 @@
-import type { Connection, Message } from "@/common/types";
-import { cors } from "./middleware/cors";
+import homepage from "./src/pages/index.html";
+import notFound from "./src/pages/404.html";
+import { randomUUIDv7, type Server } from "bun";
+import { db } from "./src/db";
+import { cors } from "./src/middleware/cors";
 import {
 	handleAuthCheck,
 	handleLogin,
 	handleLogout,
 	handleSignup,
-} from "./routes/auth";
+} from "./src/routes/auth";
 import {
 	handleCreateRoom,
 	handleGetRoomMessages,
 	handleGetRooms,
 	handleRoomJoin,
-} from "./routes/room";
-import { randomUUIDv7, type Server } from "bun";
-import { db } from "./db";
+} from "./src/routes/room";
+import type { Connection, Message } from "./src/types";
 
 async function router(req: Request, server: Server): Promise<Response> {
-	const { pathname } = new URL(req.url);
-
 	if (req.headers.get("Upgrade") === "websocket") {
 		return handleRoomJoin(req, server);
-	}
-
-	if (pathname === "/api/login" && req.method === "POST") {
-		return handleLogin(req);
-	}
-
-	if (pathname === "/api/signup" && req.method === "POST") {
-		return handleSignup(req);
-	}
-
-	if (pathname === "/api/user/check" && req.method === "GET") {
-		return handleAuthCheck(req);
-	}
-
-	if (pathname === "/api/logout" && req.method === "GET") {
-		return handleLogout(req);
-	}
-
-	if (pathname === "/api/rooms" && req.method === "GET") {
-		return handleGetRooms(req);
-	}
-
-	if (pathname === "/api/rooms/create" && req.method === "POST") {
-		return handleCreateRoom(req);
-	}
-
-	if (
-		pathname.match(/^\/api\/room\/[^\/]+\/messages$/) &&
-		req.method === "GET"
-	) {
-		const id = pathname.split("/")[3];
-		return handleGetRoomMessages(req, id);
 	}
 
 	return new Response("Not Found", { status: 404 });
 }
 
 const server = Bun.serve({
-	async fetch(request: Request, server: Server) {
+	fetch(request: Request, server: Server) {
 		const middleware = cors(router, server);
-
 		return middleware(request, server);
 	},
+
+	routes: {
+		"/": homepage,
+		"/*": notFound,
+
+		"/api/login": {
+			POST: handleLogin,
+		},
+		"/api/signup": {
+			POST: handleSignup,
+		},
+		"/api/user/check": {
+			GET: handleAuthCheck,
+		},
+		"/api/logout": {
+			GET: handleLogout,
+		},
+		"/api/rooms": {
+			GET: handleGetRooms,
+		},
+		"/api/rooms/create": {
+			POST: handleCreateRoom,
+		},
+		"/api/room/:id/messages": {
+			GET: (req) => {
+				const id = req.params.id;
+				return handleGetRoomMessages(req, id);
+			},
+		},
+	},
+
 	websocket: {
 		async open(ws: Connection) {
 			const { room, user } = ws.data;
@@ -102,6 +100,7 @@ const server = Bun.serve({
 
 			server.publish(`${room.id}`, JSON.stringify({ msg }));
 		},
+
 		async close(ws: Connection) {
 			const { room, user } = ws.data;
 
@@ -116,7 +115,9 @@ const server = Bun.serve({
 			server.publish(`${room.id}`, JSON.stringify({ msg }));
 		},
 	},
-	port: 1337,
+
+	development: true,
+	port: 3000,
 });
 
-console.log(`📨 Server listening on ${server.hostname}:${server.port}`);
+console.log(`🚀 Server listening on ${server.hostname}:${server.port}`);

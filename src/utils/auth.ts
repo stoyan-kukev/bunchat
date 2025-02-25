@@ -1,10 +1,10 @@
-import { db } from "../db";
+import { db } from "@/db";
 import {
 	DAY_IN_MILLIS,
 	type Session,
 	type SessionValidationResult,
 	type User,
-} from "@/common/types";
+} from "@/types";
 
 export function createSession(token: string, userId: string): Session {
 	const session: Session = {

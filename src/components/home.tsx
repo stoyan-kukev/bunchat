@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { Room } from "@/common/types";
+import type { Room } from "@/types";
 import { useRoom } from "../context/room-context";
 import { useAuth } from "../context/auth-context";
 import { LogOutButton } from "./auth/logout-button";
@@ -16,7 +16,7 @@ export function Home() {
 	}
 
 	const fetchRooms = () =>
-		fetch("http://localhost:1337/api/rooms", {
+		fetch("/api/rooms", {
 			credentials: "include",
 		})
 			.then((res) => res.json())
@@ -30,7 +30,9 @@ export function Home() {
 	const { room, ws, setWs } = useRoom()!;
 	useEffect(() => {
 		if (room && !ws) {
-			const socket = new WebSocket(`ws://localhost:1337/room/${room.id}`);
+			const socket = new WebSocket(
+				`ws://${window.location.host}/room/${room.id}`
+			);
 			socket.onclose = () => setWs(null);
 			setWs(socket);
 		}

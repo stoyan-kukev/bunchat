@@ -7,7 +7,7 @@ export function App() {
 	const { setUser, user } = useAuth()!;
 
 	useEffect(() => {
-		fetch("http://localhost:1337/api/user/check", {
+		fetch("/api/user/check", {
 			credentials: "include",
 		}).then(async (res) => {
 			if (res.status == 200) {

@@ -1,13 +1,13 @@
 import { randomUUIDv7 } from "bun";
-import { db } from "../db";
-import { jsonResponse } from "../utils/response";
+import { db } from "@/db";
+import { jsonResponse } from "@/utils/response";
 import {
 	createSession,
 	deleteSessionTokenCookie,
 	getTokenFromCookie,
 	setSessionTokenCookie,
-} from "../utils/auth";
-import { DAY_IN_MILLIS } from "@/common/types";
+} from "@/utils/auth";
+import { DAY_IN_MILLIS } from "@/types";
 
 export async function handleLogin(req: Request): Promise<Response> {
 	const { username, password } = await req.json();

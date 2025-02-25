@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import type { Message } from "@/common/types";
-import { useAuth } from "@/frontend/context/auth-context";
-import { useRoom } from "@/frontend/context/room-context";
+import type { Message } from "@/types";
+import { useAuth } from "@/context/auth-context";
+import { useRoom } from "@/context/room-context";
 
 export function ChatRoom() {
 	const { room, ws, setRoom, setWs } = useRoom()!;
@@ -14,7 +14,7 @@ export function ChatRoom() {
 	const chatEndRef = useRef<HTMLDivElement | null>(null);
 
 	useEffect(() => {
-		fetch(`http://localhost:1337/api/room/${room.id}/messages`, {
+		fetch(`/api/room/${room.id}/messages`, {
 			credentials: "include",
 		}).then((res) => res.json().then((data) => setMsgs(data.messages)));
 	}, []);

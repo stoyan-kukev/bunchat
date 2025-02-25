@@ -1,17 +1,17 @@
 import { useState, type FormEvent } from "react";
 
-export function SignUpForm() {
+export function LoginForm() {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const [errors, setErrors] = useState<{
 		username?: string | null;
 		password?: string | null;
-		signup?: string | null;
+		login?: string | null;
 	}>({});
 
 	const handleSubmit = async (event: FormEvent) => {
 		event.preventDefault();
-		setErrors({ username: null, password: null });
+		setErrors({ username: null, password: null, login: null });
 
 		if (username.length < 2 || username.length > 63) {
 			setErrors({
@@ -29,7 +29,7 @@ export function SignUpForm() {
 			return;
 		}
 
-		const response = await fetch("http://localhost:1337/api/signup", {
+		const response = await fetch("/api/login", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -42,12 +42,12 @@ export function SignUpForm() {
 			const resError = await response.json();
 			setErrors({
 				...errors,
-				signup: resError.signup,
+				login: resError.login,
 			});
 			return;
 		}
 
-		window.location.href = "http://localhost:3000/";
+		window.location.href = "/";
 	};
 
 	return (
@@ -82,7 +82,7 @@ export function SignUpForm() {
 					<p className="text-red-500">{errors.password}</p>
 				)}
 			</div>
-			{errors.signup && <p className="text-red-500">{errors.signup}</p>}
+			{errors.login && <p className="text-red-500">{errors.login}</p>}
 			<button
 				className="px-4 py-2 bg-green-400 hover:bg-green-500 text-white rounded-lg"
 				type="submit"

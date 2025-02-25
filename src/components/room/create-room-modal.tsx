@@ -29,7 +29,7 @@ export function CreateRoomModal({
 			return;
 		}
 
-		const response = await fetch("http://localhost:1337/api/rooms/create", {
+		const response = await fetch("/api/rooms/create", {
 			credentials: "include",
 			method: "POST",
 			headers: { "Content-Type": "application/json" },

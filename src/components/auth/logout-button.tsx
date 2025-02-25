@@ -1,10 +1,10 @@
 export function LogOutButton() {
 	const handleClick = async () => {
-		await fetch("http://localhost:1337/api/logout", {
+		await fetch("/api/logout", {
 			credentials: "include",
 		});
 
-		window.location.href = "http://localhost:3000/";
+		window.location.href = "/";
 	};
 
 	return (

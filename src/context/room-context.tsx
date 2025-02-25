@@ -1,4 +1,4 @@
-import type { Room } from "@/common/types";
+import type { Room } from "@/types";
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface RoomContextType {

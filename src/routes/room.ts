@@ -1,7 +1,7 @@
 import { randomUUIDv7, type Server } from "bun";
-import { getTokenFromCookie, validateSessionToken } from "../utils/auth";
-import { db } from "../db";
-import { jsonResponse } from "../utils/response";
+import { getTokenFromCookie, validateSessionToken } from "@/utils/auth";
+import { db } from "@/db";
+import { jsonResponse } from "@/utils/response";
 
 export async function handleGetRooms(req: Request): Promise<Response> {
 	const sessionToken = getTokenFromCookie(req);

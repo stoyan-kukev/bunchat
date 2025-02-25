@@ -1,4 +1,4 @@
-import type { User } from "@/common/types";
+import type { User } from "@/types";
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 interface AuthContextType {
