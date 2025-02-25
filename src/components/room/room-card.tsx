@@ -8,17 +8,19 @@ export function RoomCard({ id, name }: Room) {
 	const handleClick = () => setRoom({ id, name });
 
 	return (
-		<div className="flex justify-between items-center bg-gray-700 p-4 rounded-lg shadow-md border border-gray-600 hover:bg-gray-600 transition">
-			<div>
-				<h2 className="text-lg font-semibold text-gray-300">{name}</h2>
-				<p className="text-gray-500 text-sm">ID: {id}</p>
+		<div className="glass-lighter p-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-200 border border-white/5">
+			<div className="flex justify-between items-center">
+				<div>
+					<h2 className="text-lg font-semibold text-white">{name}</h2>
+					<p className="text-indigo-300 text-xs">ID: {id}</p>
+				</div>
+				<button
+					onClick={handleClick}
+					className="bg-gradient-accent hover:opacity-90 text-white px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
+				>
+					Join
+				</button>
 			</div>
-			<button
-				onClick={handleClick}
-				className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-semibold transition"
-			>
-				Join
-			</button>
 		</div>
 	);
 }

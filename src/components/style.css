@@ -1,26 +1,68 @@
 @import "tailwindcss";
 
+/* Glass effect base styles */
+.glass {
+	background: rgba(23, 25, 35, 0.6);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-darker {
+	background: rgba(17, 19, 28, 0.75);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-lighter {
+	background: rgba(30, 33, 45, 0.5);
+	backdrop-filter: blur(12px);
+	-webkit-backdrop-filter: blur(12px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient backgrounds */
+.bg-gradient-dark {
+	background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.bg-gradient-accent {
+	background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+}
+
 /* Scrollbar for WebKit browsers */
 .custom-scrollbar::-webkit-scrollbar {
 	width: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-	background: #2d2d2d;
+	background: rgba(45, 45, 45, 0.3);
 	border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-	background: #4a5568;
+	background: rgba(99, 102, 241, 0.5);
 	border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-	background: #6b7280;
+	background: rgba(99, 102, 241, 0.7);
 }
 
 /* Scrollbar for Firefox */
 .custom-scrollbar {
 	scrollbar-width: thin;
-	scrollbar-color: #4a5568 #2d2d2d;
+	scrollbar-color: rgba(99, 102, 241, 0.5) rgba(45, 45, 45, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+	from { opacity: 0; transform: translateY(10px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+	animation: fadeIn 0.3s ease-out forwards;
 }

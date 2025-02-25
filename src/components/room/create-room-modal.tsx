@@ -25,7 +25,7 @@ export function CreateRoomModal({
 		setError(null);
 
 		if (name.length < 2) {
-			setError("Room name must be longer than 2 charachters");
+			setError("Room name must be longer than 2 characters");
 			return;
 		}
 
@@ -51,44 +51,45 @@ export function CreateRoomModal({
 
 	return ReactDOM.createPortal(
 		<div
-			className="fixed inset-0 flex items-center justify-center bg-black/50"
+			className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50"
 			onClick={() => setOpen(false)}
 		>
 			<div
-				className="bg-gray-700 p-6 rounded-xl shadow-lg flex flex-col"
+				className="glass rounded-xl shadow-lg flex flex-col w-full max-w-md p-6 animate-fade-in"
 				onClick={handleContentClick}
 			>
-				<h1 className="text-2xl font-bold mb-4 text-white drop-shadow-xl">
+				<h1 className="text-2xl font-bold mb-6 text-white">
 					Create new chat room
 				</h1>
 
-				<div className="flex flex-col justify-center gap-y-2">
-					<label htmlFor="name" className="text-white">
+				<div className="flex flex-col justify-center gap-y-4">
+					<label htmlFor="name" className="text-white font-medium">
 						Enter the chat room's name:
 					</label>
 					<input
-						className="bg-gray-600 text-white px-2 py-1 rounded-md"
+						className="glass-lighter text-white px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
 						type="text"
 						id="name"
 						value={name}
 						onChange={(e) => setName(e.target.value)}
+						placeholder="Room name"
 					/>
-					{error && <p className="text-red-400">{error}</p>}
+					{error && <p className="text-red-400 text-sm">{error}</p>}
 				</div>
 
-				<div className="flex justify-between gap-x-6">
+				<div className="flex justify-end gap-x-4 mt-6">
 					<button
 						onClick={() => setOpen(false)}
-						className="mt-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded cursor-pointer"
+						className="px-4 py-2 glass-lighter hover:bg-gray-700/50 text-white rounded-lg transition-colors duration-200"
 					>
-						Close
+						Cancel
 					</button>
 
 					<button
 						onClick={() => handleCreateRoom()}
-						className="mt-4 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded cursor-pointer"
+						className="px-4 py-2 bg-gradient-accent hover:opacity-90 text-white rounded-lg transition-all duration-200"
 					>
-						Create
+						Create Room
 					</button>
 				</div>
 			</div>

@@ -56,9 +56,10 @@ export function ChatRoom() {
 	}, [msgs]);
 
 	return (
-		<div className="flex flex-col h-[500px] w-full max-w-3xl bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
-			<header className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-900 rounded-t-lg">
-				<h1 className="text-lg font-semibold text-white">
+		<div className="flex flex-col h-[500px] w-full max-w-3xl glass-darker rounded-xl shadow-lg overflow-hidden">
+			<header className="p-4 border-b border-gray-700/30 flex justify-between items-center">
+				<h1 className="text-lg font-semibold text-white flex items-center">
+					<span className="w-2 h-2 bg-green-400 rounded-full mr-2"></span>
 					{room.name}
 				</h1>
 			</header>
@@ -76,12 +77,12 @@ export function ChatRoom() {
 							}`}
 						>
 							<div
-								className={`p-3 rounded-lg max-w-xs ${
+								className={`p-3 rounded-xl max-w-xs animate-fade-in ${
 									isSystemMessage
-										? "bg-gray-600 text-gray-300 italic text-center w-full"
+										? "glass-lighter text-gray-300 italic text-center w-full"
 										: isCurrentUser
-										? "bg-green-500 text-white"
-										: "bg-gray-700 text-gray-200"
+										? "bg-gradient-accent text-white"
+										: "glass-lighter text-white"
 								}`}
 							>
 								{!isSystemMessage && (
@@ -99,9 +100,9 @@ export function ChatRoom() {
 				<div ref={chatEndRef} />
 			</div>
 
-			<footer className="p-4 border-t border-gray-700 bg-gray-900 rounded-b-lg flex items-center">
+			<footer className="p-4 border-t border-gray-700/30 flex items-center">
 				<button
-					className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 mr-3 rounded-lg transition"
+					className="bg-red-500/80 hover:bg-red-500 text-white px-4 py-2 mr-3 rounded-full transition-colors duration-200"
 					onClick={() => {
 						ws.close();
 						setWs(null);
@@ -110,20 +111,22 @@ export function ChatRoom() {
 				>
 					Leave Chat
 				</button>
-				<input
-					type="text"
-					value={input}
-					onChange={(e) => setInput(e.target.value)}
-					className="flex-1 p-2 rounded-lg bg-gray-700 text-white focus:outline-none"
-					placeholder="Type a message..."
-					onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-				/>
-				<button
-					onClick={sendMessage}
-					className="ml-3 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
-				>
-					Send
-				</button>
+				<div className="flex-1 glass-lighter rounded-full flex overflow-hidden">
+					<input
+						type="text"
+						value={input}
+						onChange={(e) => setInput(e.target.value)}
+						className="flex-1 p-3 bg-transparent text-white focus:outline-none"
+						placeholder="Type a message..."
+						onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+					/>
+					<button
+						onClick={sendMessage}
+						className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-white transition-colors duration-200"
+					>
+						Send
+					</button>
+				</div>
 			</footer>
 		</div>
 	);
