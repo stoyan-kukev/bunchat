@@ -13,11 +13,19 @@ Create a modern web app with a great developer experience while relying as much 
 
 ## Project Stats
 
--   The `node_modules` folder consists of **19** packages (lower is better)
+-   Methodology: Whatever number Bun says on a clean `bun install`
+-   The `node_modules` folder consists of **12** packages (lower is better)
 
-### History of dependency count
+### Dependency Count History
 
--   2025.02.05: 19
+| Date       | Dependencies | Change |
+| ---------- | ------------ | ------ |
+| 2025.02.05 | 19           | -      |
+| 2025.02.25 | 12           | -7 📉  |
+
+-   Reason for decrease on 2025.02.25:
+    -   Upgraded to Bun v1.2.3
+    -   Removed unnecessary @types dependencies
 
 ## Features
 
